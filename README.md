@@ -49,8 +49,8 @@ MODEL_PATH=./ai/weights/r2unet_sota.pth
 ### 3. Installation & Run
 
 # Clone the repo
-git clone https://github.com/your-org/DentaVision.git
-cd DentaVision
+*git clone https://github.com/your-org/DentaVision.git
+*cd DentaVision
 
 # Run with Docker (Includes FastAPI, Node, and React)
 docker-compose up --build
