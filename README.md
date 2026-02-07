@@ -94,20 +94,20 @@ This project implements Privacy-by-Design. No PII (Personally Identifiable Infor
 ```text
 DentaVision/
 ├── .github/                # CI/CD Workflows & PR Templates
-├── ai/                     # [Bilal/Mujtaba] Model R&D
+├── ai/                     # [Mujtaba/Rayan] Model R&D
 │   ├── models/             # R2U-Net & VLM Architectures
 │   ├── transforms/         # MONAI Preprocessing & Augmentation
 │   └── trainers/           # Training scripts (Distributed Data Parallel)
 |   └── Notebooks/          # for testing 
-├── backend/                # [Anas/Mujtaba] FastAPI Services
+├── backend/                # [sheharyar] FastAPI Services
 │   ├── api/                # Endpoints for Inference & Reports
 │   └── core/               # PII Anonymization & DICOM Parsing
-├── frontend/               # [Sheharyar/Mustafa] React Dashboard
+├── frontend/               # [Sheharyar] React Dashboard
 │   ├── components/         # Cornerstone.js & VTK.js viewers
 │   └── hooks/              # Supabase Auth & State Management
-├── data_engineering/       # [Rayan] Dataset Management
+├── data_engineering/       # [] Dataset Management
 │   ├── scripts/            # DICOM to NIfTI Conversion
 │   └── dvc/                # Data Version Control meta-files
-├── docker/                 # Deployment configurations
+├── docker/                 # Deployment configurations # 
 └── README.md               # You are here
 
