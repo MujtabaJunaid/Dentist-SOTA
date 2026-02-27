@@ -811,8 +811,37 @@ for epoch in range(100):
     if dice_score > best_dice:
         best_dice = dice_score
         patience_counter = 0
+        
+        # =====================================================================
+        # DEPLOYMENT: Save model for easy loading with tooth_segmenter.py
+        # =====================================================================
+        # Save using PyTorch native method (model weights only)
         torch.save(model.state_dict(), "/kaggle/working/best_model.pth")
+        
+        # Save metadata for tracking and deployment
+        metadata = {
+            "dice_score": float(dice_score),
+            "boundary_accuracy": float(ba_score),
+            "pixel_accuracy": float(np.mean([r['pa'] for r in results_raw.values()] if results_raw else [0])),
+            "epoch": epoch + 1,
+            "model_name": "R2U-Net Strategy 2",
+            "dataset": "SD-Tooth (STS-2D-Tooth)",
+            "loss_function": "Dice (40%) + Focal (40%) + Boundary (10%) + CE (10%)",
+            "architecture": "Recurrent Residual U-Net",
+            "parameters": 1560000,  # base_filters=32 gives ~1.56M params
+            "description": "Dental tooth segmentation with boundary loss for edge refinement"
+        }
+        
+        # Save metadata as JSON for reference
+        import json
+        metadata_path = "/kaggle/working/best_model_metadata.json"
+        with open(metadata_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
+        
         print(f"  ✅ Best model saved! Dice: {dice_score:.2f}%")
+        print(f"  ✅ Files saved to /kaggle/working/:")
+        print(f"      • best_model.pth (model weights)")
+        print(f"      • best_model_metadata.json (metadata)")
     else:
         patience_counter += 1
         print(f"  ⏱️  No improvement. Patience: {patience_counter}/{max_patience}")
@@ -1300,6 +1329,48 @@ print(f"\n📋 Current Model Status:")
 print(f"   ✓ Strategy 1 (Post-Processing):    TESTED - Not effective")
 print(f"   ✓ Strategy 2 (Boundary Loss):      IMPLEMENTED - Training now")
 print(f"   ○ Strategy 3 (Hi-Res Fine-tune):   AVAILABLE if needed")
+
+# ==============================================================================
+# 🚀 DEPLOYMENT: HOW TO GET YOUR TRAINED MODEL
+# ==============================================================================
+
+print("\n" + "=" * 80)
+print("🚀 DEPLOYMENT: YOUR MODEL IS READY!")
+print("=" * 80)
+
+print(f"""
+YOUR MODEL FILES HAVE BEEN SAVED TO /kaggle/working/:
+
+  ✅ best_model.pth                  (100-200 MB) - Model weights
+  ✅ best_model_metadata.json        (1 KB)       - Training metadata
+
+HOW TO DOWNLOAD & USE:
+
+STEP 1: Download from Kaggle
+────────────────────────────
+  1. Click "Output" tab in Kaggle notebook
+  2. Find "working/" folder
+  3. Download these 2 files:
+     • best_model.pth
+     • best_model_metadata.json
+
+STEP 2: Save to Your Local Machine
+──────────────────────────────────
+  Save both files in:
+  c:\\Users\\hp\\Dentist-SOTA\\ai\\
+
+STEP 3: Use in Your Application
+─────────────────────────────
+  from app import ToothSegmenter
+  
+  segmenter = ToothSegmenter("best_model.pth")
+  mask = segmenter.predict("xray.png")
+  
+  import cv2
+  cv2.imwrite("tooth_mask.png", mask * 255)
+
+THAT'S IT! Your model is now deployed! 🎉
+""")
 
 print("\n" + "=" * 80)
 print("✅ STRATEGY 2 TRAINING & EVALUATION COMPLETE!")
