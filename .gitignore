@@ -2,6 +2,7 @@
 __pycache__/
 *.py[codz]
 *$py.class
+*.pyc
 
 # C extensions
 *.so
@@ -143,6 +144,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.DS_Store
 
 # Spyder project settings
 .spyderproject
@@ -216,3 +218,6 @@ models/*.onnx
 # Environment
 .env
 supabase/
+
+#research paper
+s41597-024-04306-9.pdf
